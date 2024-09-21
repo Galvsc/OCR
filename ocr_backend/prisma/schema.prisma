@@ -1,0 +1,33 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// prisma/schema.prisma
+datasource db {
+  provider  = "postgresql"
+  url  	    = env("DATABASE_URL")
+  // uncomment next line if you use Prisma <5.10
+  // directUrl = env("DATABASE_URL_UNPOOLED")
+}
+
+model Event {
+  file_id    Int         @id @default(autoincrement())
+  user_id     Int        
+  filename    String      @default("key")
+  extractStatus Boolean   @default(false)
+  extractedText String    @default("Not Extracted")
+  createdAt   DateTime    @default(now())
+}
+
+model User {
+  user_id     Int         @id @default(autoincrement())
+  username    String      @unique
+  password   String
+  createdAt   DateTime    @default(now())
+}

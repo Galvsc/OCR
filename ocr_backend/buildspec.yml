@@ -1,0 +1,44 @@
+version 0.2
+
+name: Build and Deploy NestJS App
+
+on:
+  push:
+    branches:
+      - main  # Trigger the workflow on pushes to the main branch
+  pull_request:
+    branches:
+      - main  # Also trigger on pull requests to the main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        # This checks out your repository code to the runner.
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'  # Use the Node.js version you need
+
+      - name: Install dependencies
+        run: npm install
+        # This installs all the dependencies specified in package.json.
+
+      - name: Build project
+        run: npm run build
+        # This builds your NestJS project, outputting the compiled files to the dist directory.
+
+      - name: Run tests
+        run: npm test
+        # Optional: Run tests after building the project
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: build
+          path: dist/
+        # This uploads the build artifacts to GitHub Actions artifacts for later use or deployment.
